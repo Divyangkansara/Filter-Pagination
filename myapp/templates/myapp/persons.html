@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    {% load myapp_extras %}
+
+    <form method="get">
+        {{filtered_persons.form.as_p}}
+        <input type="submit" value="Submit">
+    </form>
+
+    {% for person in person_page_obj %}
+    <h2>
+        {{person.name}}
+        <br>
+        {{person.age}}
+        <br>
+        {{person.gender}}
+    </h2>
+    {% endfor %}
+
+    <div>
+        <span>
+            {% if person_page_obj.has_previous %}
+            <a href="{% my_url 1 'page' request.GET.urlencode %}">First</a>
+
+             <a href="{% my_url person_page_obj.previous_page_number 'page' request.GET.urlencode %}">Previous</a>
+            {% endif %}
+
+            <span>
+              Page {{person_page_obj.number}} of {{person_page_obj.paginator.num_pages}}
+            </span>
+
+            {% if person_page_obj.has_next %}
+             <a href="{% my_url person_page_obj.next_page_number 'page' request.GET.urlencode %}">Next</a>
+             <a href="{% my_url person_page_obj.paginator.num_pages 'page' request.GET.urlencode %}">Last</a>
+            {% endif %}
+        </span>
+    </div>
+</body>
+</html>
